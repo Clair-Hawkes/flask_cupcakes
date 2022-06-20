@@ -1,12 +1,10 @@
 """Flask app for Cupcakes"""
 
-# from numpy import size
-from flask import Flask, url_for, render_template, redirect, flash, jsonify, request
+from flask import Flask, jsonify, request
 
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, Cupcake
-# from forms import AddPetForm, EditPetForm
 
 app = Flask(__name__)
 
@@ -55,7 +53,9 @@ def cupcake_get_data(cupcake_id):
 @app.post("/api/cupcakes")
 def cupcake_create():
     """
-    Creates a cupcake with id, flavor, size, rating, and image.
+    Creates a cupcake instance with id, flavor, size, rating, and image and adds
+    to db.
+    Takes flavor, size, rating, and image.
     Returns with JSON:
         {cupcake: {id, flavor, size, rating, image}}
     """
@@ -64,11 +64,10 @@ def cupcake_create():
     size = request.json["size"]
     rating = request.json["rating"]
     image = request.json.get("image")
+    image = image if image else None
+
+    # alternate method
     # image = request.get_json()["image"]
-    # image = request.json['image']
-    print(image)
-    #
-    # request.get_json()
 
     new_cupcake = Cupcake(
         flavor=flavor,
