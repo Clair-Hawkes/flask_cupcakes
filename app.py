@@ -1,6 +1,6 @@
 """Flask app for Cupcakes"""
 
-from numpy import size
+# from numpy import size
 from flask import Flask, url_for, render_template, redirect, flash, jsonify, request
 
 # from flask_debugtoolbar import DebugToolbarExtension
@@ -39,7 +39,7 @@ def cupcakes_get_data():
     return jsonify(cupcakes=serialized)
 
 
-@app.get("/api/cupcakes/<int:cupcake-id>")
+@app.get("/api/cupcakes/<int:cupcake_id>")
 def cupcake_get_data(cupcake_id):
     """
     Get data about a single cupcake. Returns with JSON:
@@ -52,7 +52,7 @@ def cupcake_get_data(cupcake_id):
     return jsonify(cupcake=serialize)
 
 
-@app.post("/api/cupakes")
+@app.post("/api/cupcakes")
 def cupcake_create():
     """
     Creates a cupcake with id, flavor, size, rating, and image.
@@ -60,14 +60,17 @@ def cupcake_create():
         {cupcake: {id, flavor, size, rating, image}}
     """
 
-    name = request.json["name"]
     flavor = request.json["flavor"]
     size = request.json["size"]
     rating = request.json["rating"]
-    image = request.json["image"]
+    image = request.json.get("image")
+    # image = request.get_json()["image"]
+    # image = request.json['image']
+    print(image)
+    #
+    # request.get_json()
 
     new_cupcake = Cupcake(
-        name=name,
         flavor=flavor,
         size=size,
         rating=rating,
