@@ -1,5 +1,6 @@
 """Flask app for Cupcakes"""
 
+from itsdangerous import Serializer
 from flask import Flask, jsonify, request
 
 # from flask_debugtoolbar import DebugToolbarExtension
@@ -81,3 +82,47 @@ def cupcake_create():
     serialized = new_cupcake.serialize()
 
     return (jsonify(cupcake=serialized), 201)
+
+@app.patch('/api/cupcakes/<int:cupcake_id>')
+def cupcake_update_values(cupcake_id):
+    """
+    Update a cupcake by id. Any value(s) can be updated.
+    Updates instance and commits update to database.
+    Returns JSON:
+        {cupcake: {id, flavor, size, rating, image}}
+    """
+
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+
+    flavor = request.json.get("flavor")
+    if flavor:
+        cupcake.flavor = flavor
+
+    size = request.json.get("size")
+    if size:
+        cupcake.size = size
+
+    rating = request.json.get("rating")
+    if rating:
+        cupcake.rating = rating
+
+    image = request.json.get("image")
+    if image:
+        cupcake.image = image
+
+    # possible_updates = ['flavor','size','rating','image']
+
+    # for update in possible_updates:
+    #     if update:
+    #         cupcake.(update)
+
+    db.session.commit()
+
+    # TODO: Why dont we re-initialize cupcake after commit?
+    # cupcake = Cupcake.query.get(cupcake_id)
+    serialize = cupcake.serialize()
+
+    return (jsonify(cupcake=serialize))
+
+
+
