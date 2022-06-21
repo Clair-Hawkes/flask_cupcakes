@@ -110,6 +110,7 @@ def cupcake_update_values(cupcake_id):
     if image:
         cupcake.image = image
 
+    # TODO: Question on variable attributes:
     # possible_updates = ['flavor','size','rating','image']
 
     # for update in possible_updates:

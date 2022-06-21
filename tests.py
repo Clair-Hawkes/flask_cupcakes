@@ -121,12 +121,7 @@ class CupcakeViewsTestCase(TestCase):
             resp = client.patch(url, json=update)
             data = resp.json
 
-
             self.assertEqual(resp.status_code, 200)
-
-            print('*****',data,"*******")
-            print('*****',id,"*******")
-
 
             self.assertEqual(data, {
                 "cupcake": {
@@ -151,7 +146,7 @@ class CupcakeViewsTestCase(TestCase):
 
             self.assertEqual(data, {
                 "deleted":id
-                })
+            })
 
             self.assertEqual(resp.status_code, 200)
 
