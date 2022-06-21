@@ -111,11 +111,6 @@ class CupcakeViewsTestCase(TestCase):
 
     def test_update_cupcake(self):
         with app.test_client() as client:
-            # Query the database/ Get the cupcake instance
-            # Store the instances id
-            # Add to url
-            # Make a response object
-            # Assert tests
 
             cupcake = Cupcake.query.one_or_none()
             id = cupcake.id
@@ -142,5 +137,31 @@ class CupcakeViewsTestCase(TestCase):
                     "size":"Size"
                 }
             })
+
+    def test_delete_cupcake(self):
+        with app.test_client() as client:
+
+            cupcake = Cupcake.query.one_or_none()
+            id = cupcake.id
+
+            url = f'/api/cupcakes/{id}'
+
+            resp = client.delete(url)
+            data = resp.json
+
+            self.assertEqual(data, {
+                "deleted":id
+                })
+
+            self.assertEqual(resp.status_code, 200)
+
+            self.assertEqual(Cupcake.query.count(), 0)
+
+
+
+
+
+
+
 
 
