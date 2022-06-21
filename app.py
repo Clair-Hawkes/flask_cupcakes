@@ -126,3 +126,17 @@ def cupcake_update_values(cupcake_id):
 
 
 
+@app.delete('/api/cupcakes/<int:cupcake_id>')
+def cupcake_delete(cupcake_id):
+    """
+    Delete a cupcake instance and remove from db via id.
+    Takes JSON cupcake ID.
+    returns JSON {deleted: [cupcake-id]}
+    """
+
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+
+    db.session.delete(cupcake)
+    db.session.commit()
+
+    return {"deleted":cupcake_id}

@@ -108,3 +108,39 @@ class CupcakeViewsTestCase(TestCase):
             })
 
             self.assertEqual(Cupcake.query.count(), 2)
+
+    def test_update_cupcake(self):
+        with app.test_client() as client:
+            # Query the database/ Get the cupcake instance
+            # Store the instances id
+            # Add to url
+            # Make a response object
+            # Assert tests
+
+            cupcake = Cupcake.query.one_or_none()
+            id = cupcake.id
+
+            url = f'/api/cupcakes/{id}'
+            update = {"flavor":"new","size":"Size","rating":"10","image":""}
+
+            resp = client.patch(url, json=update)
+            data = resp.json
+
+
+            self.assertEqual(resp.status_code, 200)
+
+            print('*****',data,"*******")
+            print('*****',id,"*******")
+
+
+            self.assertEqual(data, {
+                "cupcake": {
+                    "flavor":"new",
+                    "id":id,
+                    "image":"http://test.com/cupcake.jpg",
+                    "rating":10,
+                    "size":"Size"
+                }
+            })
+
+
